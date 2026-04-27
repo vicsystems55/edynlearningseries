@@ -21,7 +21,43 @@
         <button class="login-btn">Log In</button>
         <button class="signup-btn">Sign Up</button>
       </div>
+      <button class="mobile-menu-btn" @click="isMobileMenuOpen = true">
+  <Menu :size="30" />
+</button>
     </header>
+    <div 
+  class="drawer-overlay" 
+  :class="{ active: isMobileMenuOpen }"
+  @click="isMobileMenuOpen = false"
+></div>
+
+<aside class="mobile-drawer" :class="{ active: isMobileMenuOpen }">
+  <div class="drawer-header">
+    <div>
+      <div class="logo-main">EDYN</div>
+      <div class="logo-sub">LEARNING SERIES</div>
+    </div>
+
+    <button class="drawer-close" @click="isMobileMenuOpen = false">
+      <X :size="28" />
+    </button>
+  </div>
+
+  <nav class="drawer-links">
+    <a href="#" @click="isMobileMenuOpen = false">Home</a>
+    <a href="#" @click="isMobileMenuOpen = false">About Us</a>
+    <a href="#" @click="isMobileMenuOpen = false">Programs</a>
+    <a href="#" @click="isMobileMenuOpen = false">Resources</a>
+    <a href="#" @click="isMobileMenuOpen = false">Pricing</a>
+    <a href="#" @click="isMobileMenuOpen = false">Blog</a>
+    <a href="#" @click="isMobileMenuOpen = false">Contact</a>
+  </nav>
+
+  <div class="drawer-actions">
+    <button class="login-btn">Log In</button>
+    <button class="signup-btn">Sign Up</button>
+  </div>
+</aside>
     <section class="hero-section">
       <div class="hero-content">
         <div class="hero-badge">
@@ -89,7 +125,7 @@
         </div>
         <div>
           <h3>Holistic Growth</h3>
-          <p>Focus on academics, values, creativity and life skills.</p>
+          <p>Focus on  values, creativity and life skills.</p>
         </div>
       </div>
 
@@ -99,7 +135,7 @@
         </div>
         <div>
           <h3>Track Progress</h3>
-          <p>Easy tools for parents to monitor growth and achievements.</p>
+          <p>Easy tools for parents to monitor achievements.</p>
         </div>
       </div>
 
@@ -331,7 +367,7 @@ import {
   GraduationCap,
   School,
   Globe2,
-  MailOpen
+  MailOpen, Menu, X
 } from 'lucide-vue-next'
 
 import img1 from '../assets/images/1.png'
@@ -339,6 +375,11 @@ import img2 from '../assets/images/2.png'
 import img3 from '../assets/images/3.png'
 import img4 from '../assets/images/5.png'
 import img5 from '../assets/images/6.png'
+
+import { ref } from 'vue'
+
+const isMobileMenuOpen = ref(false)
+
 
 const programs = [
   {
