@@ -1,22 +1,34 @@
 import 'dotenv/config'
 import { z } from 'zod'
 
+const optionalString = z.preprocess(
+  (value) => value === '' ? undefined : value,
+  z.string().min(1).optional(),
+)
+
+const optionalUrl = z.preprocess(
+  (value) => value === '' ? undefined : value,
+  z.url().optional(),
+)
+
 const environmentSchema = z.object({
   NODE_ENV: z.enum(['development', 'test', 'production']).default('development'),
   HOST: z.string().default('0.0.0.0'),
   PORT: z.coerce.number().int().positive().default(3000),
   LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace', 'silent']).default('info'),
   WEB_ORIGIN: z.string().default('http://localhost:5173,http://localhost:5174'),
-  DATABASE_URL: z.string().min(1).optional(),
-  DIRECT_URL: z.string().min(1).optional(),
-  SUPABASE_URL: z.url().optional(),
-  SUPABASE_PUBLISHABLE_KEY: z.string().min(1).optional(),
-  SUPABASE_ANON_KEY: z.string().min(1).optional(),
-  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1).optional(),
-  RESEND_API_KEY: z.string().min(1).optional(),
+  DATABASE_URL: optionalString,
+  DIRECT_URL: optionalString,
+  SUPABASE_URL: optionalUrl,
+  SUPABASE_PUBLISHABLE_KEY: optionalString,
+  SUPABASE_ANON_KEY: optionalString,
+  SUPABASE_SERVICE_ROLE_KEY: optionalString,
+  RESEND_API_KEY: optionalString,
 })
 
-const result = environmentSchema.safeParse(process.env)
+export const parseEnvironment = (input: NodeJS.ProcessEnv) => environmentSchema.safeParse(input)
+
+const result = parseEnvironment(process.env)
 
 if (!result.success) {
   console.error('Invalid environment configuration', z.treeifyError(result.error))

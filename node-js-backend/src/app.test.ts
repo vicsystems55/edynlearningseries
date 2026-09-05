@@ -1,5 +1,6 @@
 import { afterAll, describe, expect, it } from 'vitest'
 import { buildApp } from './app.js'
+import { queryClient } from './database/client.js'
 
 const app = await buildApp()
 
@@ -12,10 +13,15 @@ describe('health routes', () => {
     expect(response.json()).toMatchObject({ success: true, data: { service: 'edyn-api', status: 'ok' } })
   })
 
-  it('reports not ready when the database is not configured', async () => {
+  it('reports database readiness for the current environment', async () => {
     const response = await app.inject({ method: 'GET', url: '/api/v1/health/ready' })
-    expect(response.statusCode).toBe(503)
-    expect(response.json()).toMatchObject({ success: false, message: 'Database is not configured.' })
+    if (queryClient) {
+      expect(response.statusCode).toBe(200)
+      expect(response.json()).toMatchObject({ success: true, data: { status: 'ready' } })
+    } else {
+      expect(response.statusCode).toBe(503)
+      expect(response.json()).toMatchObject({ success: false, message: 'Database is not configured.' })
+    }
   })
 })
 
