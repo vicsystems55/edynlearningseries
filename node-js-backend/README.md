@@ -30,5 +30,5 @@ src/
 - `POST /api/v1/auth/admin/session` signs in through Supabase and rejects non-admin profiles.
 - `GET /api/v1/auth/me` verifies a bearer token and returns its Edyn profile.
 - `GET /api/v1/admin/overview` requires the `ADMIN` role.
-- `GET /api/v1/health/ready` checks database readiness for Render.
+- `GET /api/v1/health/ready` checks database readiness for application health monitoring.
 - `drizzle/0001_security_rls.sql` provisions profiles and applies Supabase RLS policies.

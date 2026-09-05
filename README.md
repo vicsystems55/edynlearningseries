@@ -75,4 +75,4 @@ flutter test
 flutter build web
 ```
 
-See [Phase 0 architecture](docs/phase-0-architecture.md) for system boundaries and [the release runbook](docs/phase-0-runbook.md) for migration, administrator bootstrap, deployment, and smoke testing.
+See [Phase 0 architecture](docs/phase-0-architecture.md) for system boundaries and [the local runbook](docs/phase-0-runbook.md) for database setup, administrator bootstrap, and manual verification.

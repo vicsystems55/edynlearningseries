@@ -10,29 +10,22 @@ edynlearningseries/
 |-- admin-mission-control/ Vue platform administration portal
 |-- node-js-backend/     Node.js/TypeScript REST API
 |-- flutter-mobile-app/  Flutter parent and learner application
-|-- docs/                Architecture decisions and contracts
-`-- .github/             Repository-wide automation
+`-- docs/                Architecture decisions and contracts
 ```
 
-Each application has an independent dependency manifest and build output. Repository-wide documentation, CI, and deployment blueprints remain at the root.
+Each application has an independent dependency manifest and build output. The GitHub repository stores source code and documentation only; build verification is run locally without paid automation services.
 
-## Deployment boundary
+## Runtime boundary
 
 ```text
-Netlify                         Render
-Vue website/admin  --------->  Node API
-                                  |
-Flutter app  --------------------|
-                                  v
-                         Supabase PostgreSQL
-                         Supabase Auth/Storage
-                                  |
-                                  v
-                               Resend
+Vue website  -----------|
+Admin Mission Control --|----> Node API ----> Supabase PostgreSQL
+Flutter app  -----------|          |          Supabase Auth/Storage
+                                   `--------> Resend
 ```
 
-- Netlify deploys the Vue public website from `website/` and Mission Control as an independent site from `admin-mission-control/`.
-- Render deploys one stateless Node API service from `node-js-backend/`.
+- GitHub stores the complete monorepo without deployment automation.
+- The website, administrator portal, API, and Flutter app can be hosted independently when required.
 - Supabase owns PostgreSQL, authentication, and object storage.
 - Flutter consumes the same versioned REST API as the Vue CMS.
 
@@ -83,7 +76,7 @@ Phase 0 prepares one future playable slice:
 - Real credentials are never committed.
 - `DATABASE_URL` uses Supabase transaction pooling for API runtime traffic.
 - `DIRECT_URL` uses session pooling for migrations.
-- The database password, Supabase service-role key, and Resend API key belong in Render/CI secret stores.
+- The database password, Supabase service-role key, and Resend API key belong only in ignored local environment files or a future host's secret store.
 - Flutter receives only the public Supabase URL and publishable key.
 
 ## Phase 0 exit criteria
@@ -94,4 +87,5 @@ Phase 0 prepares one future playable slice:
 - A canonical `FIND_IT` game definition validates in API and Flutter-compatible JSON.
 - Flutter shell has feature boundaries and a renderer registry.
 - Vue production build remains green.
+- Mission Control production build remains green.
 - API unit tests and TypeScript compilation pass.
