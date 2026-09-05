@@ -1,0 +1,9 @@
+<script setup>
+import { ref } from 'vue'
+import { LayoutDashboard, Users, BookOpen, ChartNoAxesColumnIncreasing, ShoppingBag, CreditCard, Settings, LogOut, Menu, X, Bell, Search } from 'lucide-vue-next'
+import BrandLogo from '../components/BrandLogo.vue'
+import RoutedView from '../components/RoutedView.vue'
+const open=ref(false)
+const links=[['Dashboard','/app',LayoutDashboard],['My children','/app/children',Users],['Learning','/app/children/tunde/learning',BookOpen],['Progress','/app/children/tunde/progress',ChartNoAxesColumnIncreasing],['Purchases','/app/purchases',ShoppingBag],['Subscription','/app/subscription',CreditCard],['Settings','/app/settings',Settings]]
+</script>
+<template><div class="parent-shell"><aside :class="['parent-sidebar',{open}]"><div class="sidebar-head"><BrandLogo light/><button @click="open=false"><X/></button></div><nav><RouterLink v-for="[label,to,icon] in links" :key="to" :to="to" @click="open=false"><component :is="icon" :size="20"/>{{label}}</RouterLink></nav><div class="sidebar-child"><span class="avatar">T</span><div><b>Tunde</b><small>Nursery 1 · Age 4</small></div><RouterLink to="/play/tunde/home">Play →</RouterLink></div><RouterLink class="logout" to="/"><LogOut :size="18"/> Sign out</RouterLink></aside><div class="parent-main"><header class="app-header"><button class="app-menu" @click="open=true"><Menu/></button><div><p class="muted">Sunday, 16 August</p><h2>Good morning, Tunde's family 👋</h2></div><div class="app-actions"><label class="app-search"><Search :size="18"/><input placeholder="Search Edyn"></label><button class="icon-button"><Bell :size="19"/><b>3</b></button><RouterLink to="/app/profile" class="user-chip"><span>TA</span><div><b>Tomi Adeola</b><small>Parent account</small></div></RouterLink></div></header><main class="app-content"><RoutedView/></main></div></div></template>
